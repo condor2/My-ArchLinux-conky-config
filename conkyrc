@@ -1,0 +1,172 @@
+conky.config = {
+--##  Begin Window Settings  #####################
+
+-- Use Xft?
+	use_xft = true,
+	font = 'OFL Sorts Mill Goudy:size=8',
+	xftalpha = 0.8,
+	text_buffer_size = 2048,
+
+-- Update interval in seconds
+	update_interval = 1,
+
+-- This is the number of times Conky will update before quitting.
+-- Set to zero to run forever.
+	total_run_times = 0,
+
+	--max_specials = 1024,
+
+	max_user_text = 18384,
+
+-- Create own window instead of using desktop (required in nautilus)
+	own_window = true,
+	own_window_transparent = true, -- #when set to 'no' conky appears against a black background
+	own_window_type = 'dock',
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+--These values set true transparancy
+	own_window_argb_visual = true,
+	own_window_argb_value = 100,
+
+-- Use double buffering (reduces flicker, may not work for everyone)
+	double_buffer = true,
+
+-- Minimum size of text area
+	minimum_width = 220,
+	maximum_width = 2400,
+
+-- Draw shades?
+	draw_shades = false,
+
+-- Draw outlines?
+	draw_outline = false,
+
+--Draw borders around text
+	draw_borders = false,
+
+--Stippled borders?
+	stippled_borders = 0,
+
+--Border margins
+	--border_inner_margin = 5,
+
+-- Border width
+	--border_width = 1,
+
+--Default colors and also border colors
+	default_color = '#9AB7DC',
+	-- default_color a4a4a4
+	-- default_shade_color white
+	-- default_outline_color white
+	-- own_window_colour 9AB7DC
+	-- own_window_colour 262524
+	-- color1 white
+
+-- Text alignment, other possible values are commented
+	-- #alignment top_left
+	-- #alignment top_right
+	-- #alignment bottom_left
+	-- #alignment bottom_right
+
+-- Gap between borders of screen and text
+-- same thing as passing -x at command line
+	gap_x = 1680,
+	gap_y = 50,
+
+-- Subtract file system buffers from used memory?
+	no_buffers = true,
+
+-- set to yes if you want all text to be in uppercase
+	uppercase = false,
+
+-- number of cpu samples to average
+-- set to 1 to disable averaging
+	cpu_avg_samples = 2,
+
+-- number of net samples to average
+-- set to 1 to disable averaging
+	net_avg_samples = 2,
+
+-- Force UTF8? note that UTF8 support required XFT
+	override_utf8_locale = true,
+
+-- Add spaces to keep things from moving about?  This only affects certain objects.
+	use_spacer = 'none',
+}
+
+conky.text = [[
+# - TIME - #
+${goto 65}${color 9AB7DC}${font Arial Black:size=30}${time %H:%M}${font}${color}
+${goto 72}${color DarkOrange1}${time %d %B %Y}${color}
+
+# - CALENDAR - #
+${voffset -10}${font Monospace:size=9}${execpi 300 DJS=`date +%_d`; cal |sed '2,8!d'| sed '/./!d' | sed 's/^/${goto 47} /'| sed 's/$/ /' | sed 's/^/ /' | sed /" $DJS "/s/" $DJS "/" "'${font Monospace:size=9}${voffset -1}${offset -7}${color DarkOrange1} '"$DJS"'${color}${font Monospace:size=9}'" "/}${voffset -1}
+
+# - SYSTEM - #
+${color a4a4a4}${voffset 8}${font ConkySymbols:size=14}T${font}  ${voffset -10}${font Ubuntu:style=Bold:size=8}SYSTEM${font}${color}
+${goto 35}${color DarkOrange1}OS:${color} ${color 9AB7DC}${alignr}Arch Linux${color}
+${goto 35}${color DarkOrange1}Kernel:${color}  ${color 9AB7DC}${alignr}${kernel}${color}
+${goto 35}${color DarkOrange1}File System:${color} ${color 9AB7DC}$alignr${fs_type}${color}
+${goto 35}${color DarkOrange1}SWAP:${color}${color 9AB7DC}$swapperc% ${alignr}${swapbar 8,60}${color}
+${goto 35}${color DarkOrange1}Uptime:${color}${color 9AB7DC}${alignr}${uptime}${color}
+${goto 35}${color DarkOrange1}Updates: ${alignr}${font Liberation Sans:style=Bold:size=8}${color a4a4a4}${execi 300 pacman -Qu | wc -l}${color}${font} ${color 9AB7DC}Packages${color}
+
+# - MEMORY - #
+${color a4a4a4}${voffset 8}${font ConkySymbols:size=14}J${font}  ${voffset -10}${font Ubuntu:style=Bold:size=8}MEMORY${font}${color}
+${goto 35}${color DarkOrange1}RAM${color} ${color 9AB7DC}$alignc $mem / $memmax $alignr $memperc%${color}
+${goto 35}${color 9AB7DC}$membar${color}
+
+# - HDD - #
+${color a4a4a4}${voffset 8}${font ConkySymbols:size=14}k${font}  ${voffset -10}${font Ubuntu:style=Bold:size=8}HDD${font}${color}
+${goto 35}${color DarkOrange1}root${color} ${color 9AB7DC}$alignc ${fs_used /} / ${fs_size /} $alignr ${fs_used_perc /}%${color}
+${goto 35}${color 9AB7DC}${fs_bar /}${color}
+${goto 35}${color DarkOrange1}home${color} ${color 9AB7DC}$alignc ${fs_used /home} / ${fs_size /home} ${goto 35}$alignr ${fs_used_perc /home}%${color}
+${goto 35}${color 9AB7DC}${fs_bar /home}${color}
+${goto 35}${color DarkOrange1}Date${color} ${color 9AB7DC}$alignc ${fs_used /media/Date} / ${fs_size /media/Date} $alignr ${fs_used_perc /media/Date}%${color}
+${goto 35}${color 9AB7DC}${fs_bar /media/Date}${color}
+
+# - CPU - #
+${color a4a4a4}${voffset 8}${font ConkySymbols:size=14}f${font}  ${voffset -10}${font Ubuntu:style=Bold:size=8}CPU${font}${color}
+${goto 35}${color DarkOrange1}Intel Core i5-4440${color 9AB7DC} ${alignr}${freq_g cpu0}GHz${color}
+${goto 35}${color DarkOrange1}Usage: ${color 9AB7DC}${cpu cpu0}% ${cpubar cpu0}
+${goto 35}${color DarkOrange1}Core 1: ${color 9AB7DC}${cpu cpu1}% ${cpubar cpu1}
+${goto 35}${color DarkOrange1}Core 2: ${color 9AB7DC}${cpu cpu2}% ${cpubar cpu2}
+${goto 35}${color DarkOrange1}Core 3: ${color 9AB7DC}${cpu cpu3}% ${cpubar cpu3}
+${goto 35}${color DarkOrange1}Core 4: ${color 9AB7DC}${cpu cpu3}% ${cpubar cpu4}
+
+# - TEMP - #
+${color a4a4a4}${voffset 8}${font ConkySymbols:size=14}h${font}  ${voffset -10}${font Ubuntu:style=Bold:size=8}TEMP${font}${color}
+${goto 35}${color DarkOrange1}CPU temperature:${color 9AB7DC}${alignr}${hwmon temp 1} °C${color}
+${goto 35}${color DarkOrange1}SSD temperature:${color 9AB7DC}${alignr}${hddtemp /dev/sda} °C${color}
+${goto 35}${color DarkOrange1}HDD temperature:${color 9AB7DC}${alignr}${hddtemp /dev/sdb} °C${color}
+
+# - FAN SPEEDS - #
+${color a4a4a4}${voffset 8}${font ConkySymbols:size=14}l${font}  ${voffset -10}${font Ubuntu:style=Bold:size=8}FAN SPEEDS${font}${color}
+${goto 35}${color DarkOrange1}CPU Fan Speed:${color 9AB7DC} ${alignr}${exec sensors|grep fan1 | tr -s ' ' |cut -d ' ' -f2} RPM${color}
+${goto 35}${color DarkOrange1}Chassis Fan Speed:${color 9AB7DC} ${alignr}${exec sensors|grep fan2 | tr -s ' ' |cut -d ' ' -f2} RPM${color}
+
+# - PROCESSES - #
+${color a4a4a4}${voffset 8}${font ConkySymbols:size=14}n${font}  ${voffset -10}${font Ubuntu:style=Bold:size=8}PROCESSES $alignc ${goto 135} ${alignr}MEM   ${alignr}CPU$color${font}
+${goto 35}${color DarkOrange1}${top name 1}${color} ${goto 125}$alignr${color 9AB7DC}${top mem 1}${color} $alignr${color 9AB7DC}${top cpu 1}${color}
+${goto 35}${color DarkOrange1}${top name 2}${color} ${goto 125}$alignr${color 9AB7DC}${top mem 2}${color} $alignr${color 9AB7DC}${top cpu 2}${color}
+${goto 35}${color DarkOrange1}${top name 3}${color} ${goto 125}$alignr${color 9AB7DC}${top mem 3}${color} $alignr${color 9AB7DC}${top cpu 3}${color}
+${goto 35}${color DarkOrange1}${top name 4}${color} ${goto 125}$alignr${color 9AB7DC}${top mem 4}${color} $alignr${color 9AB7DC}${top cpu 4}${color}
+${goto 35}${color DarkOrange1}${top name 5}${color} ${goto 125}$alignr${color 9AB7DC}${top mem 5}${color} $alignr${color 9AB7DC}${top cpu 5}${color}
+${goto 35}${color DarkOrange1}${top name 6}${color} ${goto 125}$alignr${color 9AB7DC}${top mem 6}${color} $alignr${color 9AB7DC}${top cpu 6}${color}
+${goto 35}${color DarkOrange1}${top name 7}${color} ${goto 125}$alignr${color 9AB7DC}${top mem 7}${color} $alignr${color 9AB7DC}${top cpu 7}${color}
+${goto 35}${color DarkOrange1}${top name 8}${color} ${goto 125}$alignr${color 9AB7DC}${top mem 8}${color} $alignr${color 9AB7DC}${top cpu 8}${color}
+${goto 35}${color DarkOrange1}${top name 9}${color} ${goto 125}$alignr${color 9AB7DC}${top mem 9}${color} $alignr${color 9AB7DC}${top cpu 9}${color}
+
+# - NETWORK - #
+${color a4a4a4}${voffset 8}${font ConkySymbols:size=14}I${font}  ${voffset -10}${font Ubuntu:style=Bold:size=8}NETWORK${font}${color}
+
+${goto 35}${color DarkOrange1}Local IP:${color}${alignr}${color 9AB7DC}${addr enp4s0}${color}
+
+${goto 35}${color DarkOrange1}Up:${color 9AB7DC}${alignr}${upspeed enp4s0} / ${totalup}${color}
+${goto 35}${upspeedgraph enp4s0 25,195 4B1B0C FF5C2B 100 -l}
+
+${goto 35}${color DarkOrange1}Down:${color 9AB7DC}${alignr}${downspeed enp4s0} / ${totaldown}${color}
+${goto 35}${downspeedgraph enp4s0 25,195 324D23 77B753 100 -l}
+
+
+
+]]
